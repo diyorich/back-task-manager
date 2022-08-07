@@ -16,11 +16,12 @@ class TaskService
         return $this->taskRepository->findAll();
     }
 
-    public function createTask($title)
+    public function createTasks(array $taskData)
     {
-        $task = new Task();
-        $task->setTitle($title);
-
-        $this->taskRepository->add($task);
+        foreach ($taskData as $task) {
+            $newTask = new Task();
+            $newTask->setTitle($task['title']);
+            $this->taskRepository->add($newTask, true);
+        }
     }
 }
