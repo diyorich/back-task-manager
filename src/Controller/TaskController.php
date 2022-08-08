@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Task;
 use App\Services\TaskService;
-use Doctrine\DBAL\Driver\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

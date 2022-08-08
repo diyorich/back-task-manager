@@ -52,18 +52,4 @@ class TaskRepository extends ServiceEntityRepository
                 new Parameter('ids', $entity->getId()),
             ]));
     }
-
-//    public function getTaskInfo(int $id)
-//    {
-////        SELE
-//    }
-//
-//    public function getTaskByTitle(string $title)
-//    {
-//        return $this->getEntityManager()
-//            ->createQuery(
-//                'SELECT * FROM App\Entity\Task p ORDER BY p.name ASC'
-//            )
-//            ->getResult();
-//    }
 }
