@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Task;
 use App\Services\TaskService;
+use Doctrine\DBAL\Driver\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,18 +17,32 @@ class TaskController extends AbstractController
     {
     }
 
-    #[Route('task/get-all')]
+    #[Route('task/get-all', methods:'GET')]
     public function getAllTasks(): Response
     {
         $allTasks = $this->taskService->getAllTasks();
         return $this->json($allTasks);
     }
 
-    #[Route('task/create')]
+    #[Route('task/create', methods:'POST')]
     public function createTask(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $this->taskService->createTasks($data);
-        return $this->json(["message" => "Таск создан"]);
+        try {
+            $data = json_decode($request->getContent(), true);
+            $this->taskService->createTasks($data);
+            return $this->json(["message" => "Таск создан"]);
+        } catch (\Exception $exception) {
+            return $this->json(["message" => $exception->getMessage()]);
+        }
+    }
+
+    #[Route('task/edit/{id}', methods:'PATCH')]
+    public function editTask(Request $request): JsonResponse
+    {
+        $route_params = $request->attributes->get('_route_params');
+        $parameters['id'] = $route_params['id'];
+        $parameters['title'] =  $request->query->get('title');
+        $this->taskService->editTask($parameters);
+        return $this->json(["message" => 'Успешно отредактировано']);
     }
 }

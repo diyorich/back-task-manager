@@ -10,10 +10,10 @@ class Task
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy:"AUTO")]
-    #[ORM\Column]
+    #[ORM\Column()]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $title = null;
 
     public function getId(): ?int
@@ -29,6 +29,13 @@ class Task
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
 
         return $this;
     }

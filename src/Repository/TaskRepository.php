@@ -4,6 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -38,4 +41,29 @@ class TaskRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    // todo: beautify this update
+    public function update(Task $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()
+            ->createQuery('UPDATE App\Entity\Task se SET se.title = :value WHERE se.id IN (:ids)')
+            ->execute(new ArrayCollection([
+                new Parameter('value', $entity->getTitle()),
+                new Parameter('ids', $entity->getId()),
+            ]));
+    }
+
+//    public function getTaskInfo(int $id)
+//    {
+////        SELE
+//    }
+//
+//    public function getTaskByTitle(string $title)
+//    {
+//        return $this->getEntityManager()
+//            ->createQuery(
+//                'SELECT * FROM App\Entity\Task p ORDER BY p.name ASC'
+//            )
+//            ->getResult();
+//    }
 }
